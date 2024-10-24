@@ -1,0 +1,86 @@
+{% extends "base_files/base.html" %}
+{% block title %}Create Administrators{% endblock title %}
+
+{% block link %}
+
+{% endblock link %}
+
+{% block style %}
+  <style>
+    .form-container {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="container-fluid bg-dark vh-100">
+  {% include "widgets/base_nav.html" %}
+  <div class="row pt-4 justify-content-center align-items-center">
+    <div class="col-md-8">
+      <div class="form-container p-4">
+        <h2 class="text-center mb-4">Create Administrator</h2>
+        <form method="POST" action="{% url 'create_ad' %}" class="row g-3">
+          {% csrf_token %}
+          
+          <div class="col-md-6">
+            {{ form.username.label_tag }}
+            {{ form.username }}
+          </div>
+
+          <div class="col-md-6">
+            {{ form.password.label_tag }}
+            {{ form.password }}
+          </div>
+
+          <div class="col-md-12">
+               {{ form.email.label_tag }}
+               {{ form.email }}
+          </div>
+
+          <div class="col-md-12">
+            {{ form.role.label_tag }}
+            {{ form.role }}
+          </div>
+
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">Create Administrator</button>
+          </div>
+
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for field, errors in form.errors.items %}
+                {% if field and field != '__all__' %}
+                  <div>{{ field }}: {{ errors|join:", " }}</div>
+                {% else %}
+                  <div>{{ errors|join:", " }}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+{% if messages %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for message in messages %}
+            Swal.fire({
+                title: 'Alert..!',
+                text: "{{ message }}",
+                icon: "{{ message.tags }}"
+            });
+        {% endfor %}
+    });
+    </script>
+{% endif %}
+{% endblock scripts %}

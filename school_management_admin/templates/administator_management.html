@@ -1,0 +1,104 @@
+{% extends "base_files/base.html" %}
+{% block title %}create administrators{% endblock title %}
+{% block link %}{% endblock link %}
+{% block style %}
+<style>
+     a {
+          text-decoration: none;
+     }
+</style>
+{% endblock style %}
+{% block content %}
+
+<div class="container-fluid bg-dark vh-100">
+     {% include "widgets/base_nav.html" %}
+     <div class="row pt-3">
+          <div class="col-md-12">
+               <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Permission Type</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-group-divider">
+                         {% for administrator in administrators %}
+                         <tr>
+                             <th scope="row">{{ administrator.id }}</th>
+                             <td>{{ administrator.username }}</td>
+                             <td>{{ administrator.email }}</td>
+                             <td>
+                                 {% if administrator.is_superuser %}
+                                     Admin
+                                 {% elif administrator.is_staff %}
+                                     Office Staff
+                                 {% elif administrator.is_librarian %}
+                                     Librarian
+                                 {% else %}
+                                     Unknown
+                                 {% endif %}
+                             </td>
+                             <td><a href="{% url 'edit-administrators' administrator.id %}"><i class="fa-solid fa-pen-to-square"></i></a></td>
+                             <!-- Use class instead of id and pass data-url -->
+                             <td><a class="del_administrator" href="#" data-url="{% url 'delete-administrators' administrator.id %}">
+                              <i class="fa-solid fa-trash"></i></a></td>
+                         </tr>
+                         {% endfor %}
+                    </tbody>
+                  </table>
+          </div>
+     </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+     $(document).ready(function() {
+         // Target elements by class instead of id
+         $('.del_administrator').click(function(e) {
+             e.preventDefault();  // Prevent default link action
+
+             // Get the URL for deleting the administrator
+             var url = $(this).data('url');
+
+             
+             Swal.fire({
+                 title: "Are you sure?",
+                 text: "Once deleted, you will not be able to recover this user!",
+                 icon: "warning",
+                 showCancelButton: true,
+                 confirmButtonText: "Yes, delete it!",
+                 cancelButtonText: "No, keep it",
+                 dangerMode: true,
+             }).then((result) => {
+                 if (result.isConfirmed) {
+                     // If confirmed, make the AJAX call
+                     $.ajax({
+                         url: url,
+                         type: 'GET',
+                         success: function(response) {
+                             Swal.fire("Deleted!", "The user has been deleted.", "success")
+                             .then(() => {
+                                 
+                                 location.reload();
+                             });
+                         },
+                         error: function(xhr, status, error) {
+                             Swal.fire("Error!", "Error deleting user", "error");
+                         }
+                     });
+                 } else {
+                     Swal.fire("Cancelled", "The user is safe!", "info");
+                 }
+             });
+         });
+     });
+</script>
+{% endblock scripts %}

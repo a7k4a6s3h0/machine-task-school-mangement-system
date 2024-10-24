@@ -1,0 +1,62 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+      <a class="navbar-brand" href="#">School Management System</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav">
+              <!-- Home Dropdown -->
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="homeDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Home
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="homeDropdown">
+                      <li><a class="dropdown-item" href="{% url 'students' %}">Students Management</a></li>
+                      <li><a class="dropdown-item" href="{% url 'create_student' %}">Add Students</a></li>
+                  </ul>
+              </li>
+
+              <!-- Administrators Management Dropdown -->
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Administrators Management
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                      <li><a class="dropdown-item" href="{% url 'administrators' %}">Administrators Management</a></li>
+                      <li><a class="dropdown-item" href="{% url 'create_ad' %}">Add Administrators</a></li>
+                  </ul>
+              </li>
+
+              <!-- Book Management Dropdown -->
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="bookDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Book Management
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="bookDropdown">
+                      <li><a class="dropdown-item" href="{% url 'books' %}">Book Management</a></li>
+                      <li><a class="dropdown-item" href="{% url 'add_books' %}">Add Books</a></li>
+                  </ul>
+              </li>
+
+              <!-- Fee History Management Dropdown -->
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" id="feeHistoryDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Fee History Management
+                  </a>
+                  <ul class="dropdown-menu" aria-labelledby="feeHistoryDropdown">
+                      <li><a class="dropdown-item" href="{% url 'libary_history' %}">Fee Management</a></li>
+                      <li><a class="dropdown-item" href="{% url 'give_book' %}">Add Fee History</a></li>
+                  </ul>
+              </li>
+          </ul>
+
+          <!-- Logout Button (aligned to the right) -->
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item bg-danger">
+                  <a class="nav-link btn" href="{% url 'logout' %}">Logout</a>
+              </li>
+          </ul>
+      </div>
+  </div>
+</nav>

@@ -1,0 +1,59 @@
+{% extends "base_files/base.html" %}
+
+{% block title %}Welcome to School Management System{% endblock title %}
+
+{% block link %}
+  {% comment %} <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> {% endcomment %}
+{% endblock link %}
+
+{% block style %}
+  <style>
+    .welcome-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #f8f9fa;
+    }
+    .welcome-box {
+      text-align: center;
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    }
+    .welcome-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #343a40;
+    }
+    .welcome-description {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      color: #6c757d;
+    }
+    .welcome-buttons a {
+      margin: 5px;
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="welcome-container">
+  <div class="welcome-box">
+    <h1 class="welcome-title">Welcome to School Management System</h1>
+    <p class="welcome-description">Manage student details, library history, and fees seamlessly with role-based access control.</p>
+    <div class="welcome-buttons">
+      <a href="{% url 'login' %}" class="btn btn-primary btn-lg">Login</a>
+      <a href="" class="btn btn-outline-secondary btn-lg">About Us</a>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+  {% comment %} <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> {% endcomment %}
+{% endblock scripts %}

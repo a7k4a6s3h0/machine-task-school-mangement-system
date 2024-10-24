@@ -1,0 +1,96 @@
+{% extends "base_files/base.html" %}
+{% block title %}edit Assign Book{% endblock title %}
+
+{% block link %}
+
+{% endblock link %}
+
+{% block style %}
+<style>
+  .form-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  }
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class="container-fluid bg-dark vh-100">
+  {% include "widgets/base_nav.html" %}
+  <div class="row pt-4 justify-content-center align-items-center">
+    <div class="col-md-8">
+      <div class="form-container p-4">
+        <h2 class="text-center mb-4">edit Assign Book</h2>
+        
+        <!-- Form to assign a book -->
+        <form method="POST" action="{% url 'edit-library-history' libary_details.id %}" class="row g-3">
+          {% csrf_token %}
+          
+          <!-- Dynamically render form fields -->
+          <div class="col-md-12">
+            {{ form.student.label_tag }}
+            {{ form.student }}
+          </div>
+
+          <div class="col-md-12">
+            {{ form.book_title.label_tag }}
+            {{ form.book_title }}
+          </div>
+
+          <div class="col-md-12">
+            {{ form.borrowed_date.label_tag }}
+            {{ form.borrowed_date }}
+          </div>
+
+          <div class="col-md-12">
+            {{ form.return_date.label_tag }}
+            {{ form.return_date }}
+          </div>
+
+          <div class="col-md-12">
+            {{ form.status.label_tag }}
+            {{ form.status }}
+          </div>
+
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">edit assign Book</button>
+          </div>
+
+          <!-- Error Handling -->
+          {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              {% for field, errors in form.errors.items %}
+                {% if field and field != '__all__' %}
+                  <div>{{ field }}: {{ errors|join:", " }}</div>
+                {% else %}
+                  <div>{{ errors|join:", " }}</div>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+          
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+
+{% if messages %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for message in messages %}
+            Swal.fire({
+                title: 'Alert..!',
+                text: "{{ message }}",
+                icon: "{{ message.tags }}"
+            });
+        {% endfor %}
+    });
+    </script>
+{% endif %}
+{% endblock scripts %}

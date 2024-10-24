@@ -1,0 +1,94 @@
+{% extends "base_files/base.html" %}
+{% block title %}Book Management{% endblock title %}
+
+{% block link %}
+<!-- Add additional CSS or links if needed -->
+{% endblock link %}
+
+{% block style %}
+  <style>
+    .card {
+      margin-bottom: 20px;
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="container-fluid bg-dark vh-100">
+  {% include "widgets/base_nav.html" %}
+  
+  <!-- Loop through books and display in cards -->
+  <div class="row pt-4">
+    {% for book in books_details %}
+    <div class="col-sm-6 mb-3 mb-sm-0">
+      <div class="card">
+        <img src="{{ book.image.url }}" class="card-img-top" alt="{{ book.title }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <p class="card-text"><strong>Author:</strong> {{ book.author }}</p>
+          <p class="card-text"><strong>Description:</strong> {{ book.description }}</p>
+          <p class="card-text"><strong>Price:</strong> ${{ book.price }}</p>
+          <a href="{% url 'edit-book' book.id %}" class="btn btn-primary">Edit</a>
+          <a href='#' data-url="{% url 'delete-books' book.id %}" class="btn btn-danger del_books">Delete</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+</div>
+{% endblock content %}
+
+{% block scripts %}
+<!-- Add any additional scripts if needed -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+     $(document).ready(function() {
+         // Target elements by class instead of id
+         $('.del_books').click(function(e) {
+             e.preventDefault();  // Prevent default link action
+
+             // Get the URL for deleting the administrator
+             var url = $(this).data('url');
+
+             // Use Swal.fire() instead of swal()
+             Swal.fire({
+                 title: "Are you sure?",
+                 text: "Once deleted, you will not be able to recover this user!",
+                 icon: "warning",
+                 showCancelButton: true,
+                 confirmButtonText: "Yes, delete it!",
+                 cancelButtonText: "No, keep it",
+                 dangerMode: true,
+             }).then((result) => {
+                 if (result.isConfirmed) {
+                     // If confirmed, make the AJAX call
+                     $.ajax({
+                         url: url,
+                         type: 'GET',
+                         success: function(response) {
+                             Swal.fire("Deleted!", "The user has been deleted.", "success")
+                             .then(() => {
+                                 // Optionally reload the page or remove the row from the table
+                                 location.reload();
+                             });
+                         },
+                         error: function(xhr, status, error) {
+                             Swal.fire("Error!", "Error deleting user", "error");
+                         }
+                     });
+                 } else {
+                     Swal.fire("Cancelled", "The user is safe!", "info");
+                 }
+             });
+         });
+     });
+</script>
+
+{% endblock scripts %}

@@ -1,0 +1,101 @@
+{% extends "base_files/base.html" %}
+{% block title %}Library History{% endblock title %}
+
+{% block link %}
+
+{% endblock link %}
+
+{% block style %}
+  <style>
+    .card {
+      margin-bottom: 20px;
+    }
+    .card-img-top {
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="container-fluid bg-dark vh-100">
+  {% include "widgets/base_nav.html" %}
+  
+  <!-- Loop through library history and display in cards -->
+  <div class="row pt-4">
+    {% for history in history_details %}
+    <div class="col-sm-6 mb-3 mb-sm-0">
+      <div class="card">
+        <img src="{{ history.book_title.image.url }}" class="card-img-top" alt="{{ history.book_title.title }}">
+        <div class="card-body">
+          <h5 class="card-title">{{ history.book_title.title }}</h5>
+          <p class="card-text"><strong>Student:</strong> {{ history.student.name }}</p>
+          <p class="card-text"><strong>Borrowed Date:</strong> {{ history.borrowed_date }}</p>
+          <p class="card-text"><strong>Return Date:</strong> {% if history.return_date %}{{ history.return_date }}{% else %}N/A{% endif %}</p>
+          <p class="card-text"><strong>Status:</strong> {{ history.get_status_display }}</p>
+          <p class="card-text"><strong>created:</strong> {{ history.created_at }}</p>
+          <p class="card-text"><strong>updated:</strong> {{ history.updated_at }}</p>
+          <p class="card-text">
+            <strong>Add or edit Payment:</strong>
+            <a href="{% url 'add_fee_history' %}?book_id={{ history.id }}" class="btn btn-primary">Add or edit</a>
+          </p>
+          <a href="{% url 'edit-library-history' history.id %}" class="btn btn-primary">Edit</a>
+          <a href='#' data-url="{% url 'delete-library-history' history.id %}" class="btn btn-danger del_history">Delete</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  
+</div>
+{% endblock content %}
+
+{% block scripts %}
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script>
+     $(document).ready(function() {
+         
+         $('.del_history').click(function(e) {
+             e.preventDefault();  // Prevent default link action
+
+             // Get the URL for deleting the library history record
+             var url = $(this).data('url');
+
+             
+             Swal.fire({
+                 title: "Are you sure?",
+                 text: "Once deleted, you will not be able to recover this record!",
+                 icon: "warning",
+                 showCancelButton: true,
+                 confirmButtonText: "Yes, delete it!",
+                 cancelButtonText: "No, keep it",
+                 dangerMode: true,
+             }).then((result) => {
+                 if (result.isConfirmed) {
+                     // If confirmed, make the AJAX call
+                     $.ajax({
+                         url: url,
+                         type: 'GET',
+                         success: function(response) {
+                             Swal.fire("Deleted!", "The record has been deleted.", "success")
+                             .then(() => {
+                                 
+                                 location.reload();
+                             });
+                         },
+                         error: function(xhr, status, error) {
+                             Swal.fire("Error!", "Error deleting the record", "error");
+                         }
+                     });
+                 } else {
+                     Swal.fire("Cancelled", "The record is safe!", "info");
+                 }
+             });
+         });
+     });
+</script>
+
+{% endblock scripts %}

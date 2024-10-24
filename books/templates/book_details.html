@@ -1,0 +1,90 @@
+{% extends "base_files/base.html" %}
+{% block title %}book details{% endblock title %}
+
+{% block link %}
+
+{% endblock link %}
+
+{% block style %}
+  <style>
+    .form-container {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+  </style>
+{% endblock style %}
+
+{% block content %}
+<div class="container-fluid bg-dark ">
+  {% include "widgets/base_nav.html" %}
+  <div class="row pt-4 justify-content-center align-items-center">
+    <div class="col-md-8">
+      <div class="form-container p-4">
+        <h2 class="text-center mb-4">Edit book details</h2>
+        
+        <!-- Form -->
+        <form method="POST" action="{% url 'edit-book' book_details.id %}" enctype="multipart/form-data" class="row g-3">
+          {% csrf_token %}
+          
+          <div class="col-md-12">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+          </div>
+        
+          <div class="col-md-12">
+            {{ form.author.label_tag }}
+            {{ form.author }}
+          </div>
+        
+          <div class="col-md-12">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+          </div>
+        
+          <div class="col-md-12">
+            {{ form.price.label_tag }}
+            {{ form.price }}
+          </div>
+        
+          <div class="col-md-12">
+            <label for="existing_image">Existing Image</label>
+            <div>
+                <img src="{{ book_details.image.url }}" alt="Current Image" width="100">
+            </div>
+          </div>
+        
+          <div class="col-md-12">
+            {{ form.image.label_tag }}
+            {{ form.image }}
+          </div>
+        
+          <div class="col-12 text-center">
+            <button type="submit" class="btn btn-primary">Edit Book</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block scripts %}
+
+{% if messages %}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        {% for message in messages %}
+            Swal.fire({
+                title: 'Alert..!',
+                text: "{{ message }}",
+                icon: "{{ message.tags }}"
+            });
+        {% endfor %}
+    });
+    </script>
+{% endif %}
+ 
+{% endblock scripts %}
